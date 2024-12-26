@@ -3,15 +3,25 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "@/hooks/context/useAuth";
 import { LogOutIcon, Settings } from "lucide-react";
 export const UserButton = () => {
-  const { auth } = useAuth();
+  const { auth, logout } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  async function handleLogout() {
+    await logout();
+    toast({
+      title: "Successfully signed out",
+      type: "success",
+    });
+    navigate("/auth/signin");
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="outline-none relative">
@@ -21,8 +31,14 @@ export const UserButton = () => {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem> <Settings className="size-4 mr-2 h-10"/> Settings</DropdownMenuItem>
-        <DropdownMenuItem> <LogOutIcon className="size-4 mr-2 h-10"/> Logout</DropdownMenuItem>
+        <DropdownMenuItem>
+          {" "}
+          <Settings className="size-4 mr-2 h-10" /> Settings
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={handleLogout}>
+          {" "}
+          <LogOutIcon className="size-4 mr-2 h-10" /> Logout
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
