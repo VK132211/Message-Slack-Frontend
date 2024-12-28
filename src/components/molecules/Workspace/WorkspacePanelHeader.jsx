@@ -9,6 +9,7 @@ import {
 import { useAuth } from "@/hooks/context/useAuth";
 import { ChevronDownIcon, ListFilterIcon, SquarePenIcon } from "lucide-react";
 import { useWorkspacePrefernecesModal } from "@/hooks/context/useWorkspacePreferencesModal";
+import { useEffect } from "react";
 
 export const WorkspacePanelHeader = ({ workspace }) => {
   const workspacemembers = workspace.members;
@@ -18,7 +19,11 @@ export const WorkspacePanelHeader = ({ workspace }) => {
     (member) => member.memberId._id === auth?.user?._id && member.role === "admin"
   );
 
-  const { setOpenPreferences, setInitialValue } = useWorkspacePrefernecesModal();
+  const { setOpenPreferences, setInitialValue, setWorkspace } = useWorkspacePrefernecesModal();
+
+  useEffect(()=>{
+    setWorkspace(workspace)
+  },[])
 
   return (
     <div className="flex items-center justify-between px-4 h-[50px] gap-0.5">
