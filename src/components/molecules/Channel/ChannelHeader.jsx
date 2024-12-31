@@ -1,6 +1,5 @@
 import { FaChevronDown } from "react-icons/fa";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,7 +10,38 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { useState } from "react";
+import { useUpdateChannel } from "@/hooks/apis/channels/useUpdateChannel";
+import { useParams } from "react-router-dom";
+import { useCurrentWorkspace } from "@/hooks/context/useCurrentWorkspace";
+import { useToast } from "@/hooks/use-toast";
+import { useQueryClient } from "@tanstack/react-query";
 export const ChannelHeader = ({ name }) => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const { workspace } = useCurrentWorkspace();
+  const [renameValue, setRenameValue] = useState(name);
+  const [edit, setEdit] = useState(false);
+  const { channelId } = useParams();
+  const { isPending, updateChannelMutation } = useUpdateChannel(channelId);
+  async function handleFormSubmit(e) {
+    e.preventDefault();
+    try {
+      await updateChannelMutation(renameValue);
+      queryClient.invalidateQueries(`fetchWorkspaceById-${workspace?._id}`);
+      setEdit(false);
+      toast({
+        title: "channel updated successfully",
+        type: "success",
+      });
+    } catch (error) {
+      console.log("Error in updating channel", error);
+      toast({
+        title: "Error in updating channel",
+        type: "error",
+      });
+    }
+  }
   return (
     <div className="bg-white border-b h-[50px] flex items-center px-4 overflow-hidden">
       <Dialog>
@@ -29,9 +59,9 @@ export const ChannelHeader = ({ name }) => {
             <div className="px-5 py-4 bg-white rounded-lg border cursor-pointer hover:bg-gray-100">
               <div className="flex items-center justify-between">
                 <p className="text-sm font-semibold">Channel name</p>
-                <p className="text-sm font-semibold">
+                <div className="text-sm font-semibold">
                   <Dialog>
-                    <DialogTrigger asChild>
+                    <DialogTrigger asChild onClick={() => setEdit(true)}>
                       <Button variant="outline">Edit</Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[425px]">
@@ -41,20 +71,27 @@ export const ChannelHeader = ({ name }) => {
                           Make changes to your channel here. Click save when you're done.
                         </DialogDescription>
                       </DialogHeader>
-                      <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="name" className="text-right">
-                            Name
-                          </Label>
-                          <Input id="name" value="Pedro Duarte" className="col-span-3" />
-                        </div>
-                      </div>
-                      <DialogFooter>
-                        <Button type="submit">Save changes</Button>
-                      </DialogFooter>
+
+                      <form className="space-y-4" onSubmit={handleFormSubmit}>
+                        <Input
+                          value={renameValue}
+                          onChange={(e) => setRenameValue(e.target.value)}
+                          required
+                          autoFocus
+                          minLength={3}
+                          maxLength={50}
+                          disabled={isPending}
+                          placeholder="Channel name"
+                        />
+                        <DialogFooter>
+                          <Button type="submit" disabled={isPending}>
+                            Save changes
+                          </Button>
+                        </DialogFooter>
+                      </form>
                     </DialogContent>
                   </Dialog>
-                </p>
+                </div>
               </div>
               <p className="text-sm">{name}</p>
             </div>

@@ -12,3 +12,21 @@ export const getChannelById = async ({ channelId, token }) => {
     console.log("Error in getChannelByIdRequest", error);
   }
 };
+
+export const updateChannelRequest = async ({ channelId, name, token }) => {
+  try {
+    const response = await axios.put(
+      `/channels/${channelId}`,
+      { name },
+      {
+        headers: {
+          "x-access-token": token,
+        },
+      }
+    );
+    return response?.data?.data;
+  } catch (error) {
+    console.log("Error in updating channel request", error);
+    throw error.response.data;
+  }
+};
