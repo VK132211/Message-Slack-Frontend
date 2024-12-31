@@ -41,11 +41,9 @@ export const UserButton = () => {
           <PencilIcon className="size-4 mr-2 h-10" /> create workspace
         </DropdownMenuItem>
         <DropdownMenuItem>
-          {" "}
           <Settings className="size-4 mr-2 h-10" /> Settings
         </DropdownMenuItem>
         <DropdownMenuItem onClick={handleLogout}>
-          {" "}
           <LogOutIcon className="size-4 mr-2 h-10" /> Logout
         </DropdownMenuItem>
       </DropdownMenuContent>

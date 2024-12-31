@@ -34,7 +34,6 @@ export const useConfirm = ({ title, message }) => {
   const ConfirmDialog = () => {
     return (
       <AlertDialog open={promise !== null} onOpenChange={handleClose}>
-        <AlertDialogTrigger>Open</AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>{title}</AlertDialogTitle>
