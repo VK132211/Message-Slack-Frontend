@@ -70,7 +70,7 @@ export const SigninCard = ({
         <p className="text-sm text-muted-foreground mt-4">
           Don't have an account?{" "}
           <span className="text-sky-600 hover:underline cursor-pointer" onClick={(e) => navigate("/auth/signup")}>
-            Sign In
+            Sign Up
           </span>
         </p>
       </CardContent>

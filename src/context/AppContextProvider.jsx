@@ -5,4 +5,4 @@ import { WorkspacePreferencesModalContextProvider } from "./WorkspacePreferences
 import { CreateChannelContextProvider } from "./CreateChannelContext";
 import { WorkspaceContextProvider } from "./WorkspaceContext";
 
-export const AppContextProvider = combineContext(AuthContextProvider, CreateWorkspaceContextProvider, WorkspacePreferencesModalContextProvider, CreateChannelContextProvider, WorkspaceContextProvider);
+export const AppContextProvider = combineContext(AuthContextProvider, WorkspaceContextProvider, CreateWorkspaceContextProvider, WorkspacePreferencesModalContextProvider, CreateChannelContextProvider);

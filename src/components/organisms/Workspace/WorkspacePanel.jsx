@@ -1,10 +1,11 @@
 import { WorkspacePanelHeader } from "@/components/molecules/Workspace/WorkspacePanelHeader";
 import { useGetWorkspaceById } from "@/hooks/apis/workspaces/useGetWorkspaceById";
-import { AlertTriangleIcon, HashIcon, Loader, MessageSquareTextIcon, SendHorizonalIcon } from 'lucide-react';
+import { AlertTriangleIcon, HashIcon, Loader, MessageSquareTextIcon, SendHorizonalIcon } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { SideBarItem } from "@/components/atoms/SideBarItem/SideBarItem";
-import { WorkspacePanelSection } from '@/components/molecules/Workspace/WorkspacePanelSection';
-import { useCreateChannelModal } from '@/hooks/context/useCreateChannelModal';
+import { WorkspacePanelSection } from "@/components/molecules/Workspace/WorkspacePanelSection";
+import { useCreateChannelModal } from "@/hooks/context/useCreateChannelModal";
+import { UserItem } from "@/components/atoms/UserItem/UserItem";
 export const WorkspacePanel = () => {
   const { workspaceId } = useParams();
   const { workspace, isFetching, isSuccess } = useGetWorkspaceById(workspaceId);
@@ -40,6 +41,19 @@ export const WorkspacePanel = () => {
       >
         {workspace?.channels?.map((channel) => {
           return <SideBarItem key={channel._id} icon={HashIcon} label={channel.name} id={channel._id} />;
+        })}
+      </WorkspacePanelSection>
+
+      <WorkspacePanelSection label="Direct messages" onIconClick={() => {}}>
+        {workspace?.members?.map((item) => {
+          return (
+            <UserItem
+              key={item.memberId._id}
+              label={item.memberId.username}
+              id={item.memberId._id}
+              image={item.memberId.avatar}
+            />
+          );
         })}
       </WorkspacePanelSection>
     </div>
