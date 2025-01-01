@@ -4,8 +4,9 @@ import "quill/dist/quill.snow.css";
 import { Hint } from "../Hint/Hint";
 import { Button } from "@/components/ui/button";
 import { ImageIcon } from "lucide-react";
+import { MdSend } from "react-icons/md";
 import { PiTextAa } from "react-icons/pi";
-export const Editor = () => {
+export const Editor = ({ onSubmit }) => {
   const [isToolbarVisible, setIsToolbarVisible] = useState(false);
   const containerRef = useRef();
   const defaultValueRef = useRef();
@@ -70,6 +71,17 @@ export const Editor = () => {
           <Hint label="Image">
             <Button size="iconSm" variant="ghost" disabled={false} onClick={() => {}}>
               <ImageIcon className="size-4" />
+            </Button>
+          </Hint>
+          <Hint label="Send Message">
+            <Button
+              size="iconSm"
+              className="ml-auto bg-[#007a6a] hover:bg-[#007a6a]/80 text-white"
+              onClick={() => {
+                onSubmit({ body: JSON.stringify(quillRef.current?.getContents()) });
+              }}
+            >
+              <MdSend className="size-4" />
             </Button>
           </Hint>
         </div>
